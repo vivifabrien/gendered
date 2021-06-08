@@ -55,12 +55,13 @@ library(gendered)
 
 ```{r}
 pair_examples <- data.frame(text = c("Liebe Migranten und Migrantinnen, liebe Arbeiterinnen und Arbeiter.", 
+                                     "Verlierer & Verlierinnen der Wirtschaftskrise",
                                    "Es ist wichtig sich speziell für Arbeiterinnen einzusetzen.",
                                    "Die Bürger und Bürgerinnen verlangen mehr.",
                                    "Bin beim Treffen ehemaliger Stipendiaten und Stipendiatinnen!",
                                    "Polen und auch Polinnen verdienen zu wenig.",
                                    "Innenministerium des Bundes"),
-                              text_id = 1:6) 
+                              text_id = 1:7) 
 
 pair_examples %>% 
   gendered_pairs(text)
@@ -99,5 +100,4 @@ neutral_examples %>%
   dplyr::mutate(neutrals = stringr::str_extract_all(text, neutral_forms)) %>%
   tidyr::unnest_longer(neutrals)
 ```
-
 
