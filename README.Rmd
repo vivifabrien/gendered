@@ -64,7 +64,7 @@ pair_examples <- data.frame(text = c("Liebe Migranten und Migrantinnen, liebe Ar
                               text_id = 1:7) 
 
 pair_examples %>% 
-  gendered_pairs(text, debug = T)
+  gendered_pairs(text)
 ```
 
 ## Gendered symbol forms
