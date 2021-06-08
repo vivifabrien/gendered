@@ -5,10 +5,10 @@ gendered_pairs <- function(text_dat, text, debug = F) {
         # mutate(text_id = 1:n()) %>%
         ## some cleaning of text before we pipe it in
         dplyr::mutate(clean_text = stringr::str_remove_all({{ text }}, "-|\\bliebe\\b|\\bdie\\b|\\bden\\b|\\bder\\b|\\bauch\\b|\\bwerte\\b") %>% stringr::str_squish(),
-               ## extract word und female plural
-               match1 = stringr::str_extract_all(clean_text, "\\w+\\s+und\\s+\\w+innen"),
-               ## extractfemale plural und word
-               match2 = stringr::str_extract_all(clean_text, "\\w+innen\\s+und\\s+\\w+")
+                      ## extract word und female plural
+                      match1 = stringr::str_extract_all(clean_text, "\\w+\\s+(und|&)\\s+\\w+innen"),
+                      ## extractfemale plural und word
+                      match2 = stringr::str_extract_all(clean_text, "\\w+innen\\s+(und|&)\\s+\\w+")
         ) %>%
         ## unnest multiple matches
         tidyr::unnest_longer(match1) %>%
@@ -27,11 +27,11 @@ gendered_pairs <- function(text_dat, text, debug = F) {
                 stringr::str_replace_all("ü", "u") %>%
                 stringr::str_replace_all("ö", "o"),
             ## extract first and last word for female last
-            match1_word1 = stringr::str_extract(match1, "\\w+"),
-            match1_word2 = stringr::str_extract(match1, "(?<=und\\s{1,3})\\w+innen"),
+            match1_word1 = stringr::word(match1, 1),
+            match1_word2 = stringr::word(match1, 3),
             ## extract first and last word for female first
-            match2_word1 = stringr::str_extract(match2, "\\w+innen"),
-            match2_word2 = stringr::str_extract(match2, "(?<=und\\s{1,3})\\w+"),
+            match2_word1 = stringr::word(match2, 1),
+            match2_word2 = stringr::word(match2, 3),
             ## drop if first or second word don't appear in the other
             ## also drop if the first three characters are the same and the
             ## fourth letter is e or i
@@ -53,7 +53,7 @@ gendered_pairs <- function(text_dat, text, debug = F) {
                 T ~ T),
             ## drop if both matches are bad
             to_drop3 = ifelse(to_drop1 & to_drop2, T, F)) %>%
-            ## final match
+        ## final match
         dplyr::rowwise() %>%
         dplyr::mutate(
             match = dplyr::case_when(
