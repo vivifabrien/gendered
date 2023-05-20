@@ -11,8 +11,8 @@ gendered_pairs <- function(text_dat, text, debug = F) {
                       match2 = stringr::str_extract_all(clean_text, "\\w+innen\\s+(und|&)\\s+\\w+")
         ) %>%
         ## unnest multiple matches
-        tidyr::unnest_longer(match1) %>%
-        tidyr::unnest_longer(match2) %>%
+        tidyr::unchop(match1, keep_empty = T) %>%
+        tidyr::unchop(match2, keep_empty = T) %>%
         dplyr::mutate(
             ## clean match1
             match1 = match1 %>%
