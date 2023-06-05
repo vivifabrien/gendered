@@ -1,6 +1,6 @@
 #' @export
 gendered_symbols <- function(text_dat, text, singular = FALSE, debug = FALSE) {
-    regex_term <- if(singular) {"\\S+([:punct:]i|I)(n|nnen\\b"} else {"\\S+([:punct:]i|I)nnen\\b"}
+    regex_term <- if (singular) {"\\S+([:punct:]i|I)(n|nnen)\\b"} else {"\\S+([:punct:]i|I)nnen\\b"}
     
     final_dat <- text_dat %>%
         dplyr::mutate(
